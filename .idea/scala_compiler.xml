@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="Maven 1" modules="sqoop">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\collector\sqoop\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 2" modules="collector">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\collector\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 3" modules="flume">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\collector\flume\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 4" modules="HotelTrip01">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 5" modules="warehouse">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\warehouse\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 6" modules="bi">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\bi\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 7" modules="common">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\Develop\HotelTrip01\common\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+  </component>
+</project>

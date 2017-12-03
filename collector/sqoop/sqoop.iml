@@ -92,5 +92,6 @@
     <orderEntry type="library" name="Maven: org.tukaani:xz:1.0" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.1.4" level="project" />
+    <orderEntry type="module" module-name="common" />
   </component>
 </module>

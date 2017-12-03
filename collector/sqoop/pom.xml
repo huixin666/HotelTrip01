@@ -27,6 +27,13 @@
             <artifactId>postgresql</artifactId>
             <version>42.1.4</version>
         </dependency>
+        <!--添加时间的依赖,这个注意一下,要记下怎样使用-->
+        <dependency>
+            <groupId>com.zhiyou.bd18</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
     <build>
         <!--写插件-->

@@ -3,7 +3,9 @@ package com.zhiyou.bd18.sqoop.link
 import org.apache.sqoop.client.SqoopClient
 import java.util
 
+import com.zhiyou.bd18.sqoop.SQClint
 import org.apache.sqoop.model.{MConfig, MInput}
+
 /**
   * @Author: HuiXin
   * @Description: link  一个项目只创建一个link就可以了
@@ -11,6 +13,7 @@ import org.apache.sqoop.model.{MConfig, MInput}
   * @Monified By:
   */
 object LinkCreator {
+  //link是共用的连接,它可以进行共用
   //创建hdfslink   为了项目可迁移来写,有时还可以在集群里面去写
   //创建 postgresql link jdbc link
   /*link是连接两边的通道,中间有一个job,注意数据的来源和和数据的去向,
@@ -18,8 +21,10 @@ object LinkCreator {
   link的类型根据两边数据类型的不同而不同
   */
   //报错信息404,原因url后面没有加上"/"
-  val url = "http://master:12000/sqoop/"
-  val client = new SqoopClient(url)
+  /* val url = "http://master:12000/sqoop/"
+   val client = new SqoopClient(url)*/
+  val client = SQClint.client
+
   def createHdfsLink() = {
     val hdfsLink = client.createLink("hdfs-connector")
     val linkConfig = hdfsLink.getConnectorLinkConfig()
@@ -39,7 +44,7 @@ object LinkCreator {
   }
 
   def createPostgresqlLink() = {
-      val pglink = client.createLink("generic-jdbc-connector")
+    val pglink = client.createLink("generic-jdbc-connector")
     val linkConfig = pglink.getConnectorLinkConfig
     //打印参数配置
     //printLinkConfiguration(linkConfig.getConfigs)
@@ -50,12 +55,13 @@ object LinkCreator {
     linkConfig.getStringInput("dialect.identifierEnclose").setValue(" ")
     pglink.setName("btrip_pgdb")
     val status = client.saveLink(pglink)
-    if(status.canProceed){
+    if (status.canProceed) {
       println("postgresql_link创建成功")
-    }else{
+    } else {
       println("postgresql_link创建失败")
     }
   }
+
   //打印
   def printLinkConfiguration(configs: util.List[MConfig]) = {
     for (i <- 0 until configs.size()) {
@@ -68,21 +74,21 @@ object LinkCreator {
   }
 
   //删除link
-  def deleteLink(name:String) = {
-    try{
+  def deleteLink(name: String) = {
+    try {
       client.deleteLink(name)
       println("删除成功")
-    }catch{
-      case e:Exception => print("不存在")
+    } catch {
+      case e: Exception => print("不存在")
     }
   }
 
 
   def main(args: Array[String]): Unit = {
-      //createHdfsLink()
-    deleteLink("btrip_hdfs")
+    createHdfsLink()
+    //deleteLink("btrip_hdfs")
     //-------上面测试成功----------
-    //createPostgresqlLink()
-   deleteLink("btrip_pgdb")
+    createPostgresqlLink()
+    // deleteLink("btrip_pgdb")
   }
 }

@@ -1,6 +1,10 @@
 package com.zhiyou.bd18.sqoop.leadin
 
-import org.apache.sqoop.client.SqoopClient
+import java.util.Date
+
+import com.zhiyou.bd18.common.DateUtil
+import com.zhiyou.bd18.sqoop.SQClint
+
 import org.apache.sqoop.model.{MFromConfig, MToConfig}
 
 /**
@@ -10,11 +14,18 @@ import org.apache.sqoop.model.{MFromConfig, MToConfig}
   * @Monified By:
   */
 object CompanyImport {
-  val url = "http://master:12000/sqoop/"
-  val client = new SqoopClient(url)
+  //注意这个url要抽到一个代码里面,url改变的时候只需要改变那一个代码就好
+  //把下面两句话移到创建的个类中去
+  /*val url = "http://master:12000/sqoop/"
+  val client = new SqoopClient(url)*/
+  val client = SQClint.client
+  //正常情况下,应该有个日期转换格式的工具类
+  var  yyyymmdd =  DateUtil.convert2String(new Date(),"yyyyMMdd")
   //创建job   job中把Company的数据带入到hdf上
   //启动job
 def createJob() = {
+    //sqoop使用的sql中必须包含${CONDITIONS}
+    //sqoop的lib目录下要把postgresql的驱动jar包拷贝进去
   val sql =
     """
       |select company_id
@@ -42,9 +53,9 @@ def createJob() = {
     toConfig.getEnumInput("toJobConfig.compression").setValue("NONE")
     //导入到hdfs上目录的位置
     //根路径/sqoop/btrip_pg
-    toConfig.getStringInput("toJobConfig.outputDirectory").setValue("/sqoop/btrip_pg")
+    toConfig.getStringInput("toJobConfig.outputDirectory").setValue(s"/sqoop/btrip_pg/$yyyymmdd/tb_company")
     toConfig.getBooleanInput("toJobConfig.appendMode").setValue(true)
-    job.setName("btrip_company")
+    job.setName(s"btrip_company_$yyyymmdd")
     val status = client.saveJob(job)
     if(status.canProceed){
       println("company job创建成功")
@@ -94,9 +105,16 @@ def createJob() = {
   }
 
 
+
   def main(args: Array[String]): Unit = {
+    //为了让用户输入日期
+    yyyymmdd = args match{
+      case Array(date) => date
+      case _ => yyyymmdd
+    }
     //测试成功
-    createJob()
-    //deleteJob("btrip_company")
+   // createJob()
+   // deleteJob(s"btrip_company_$yyyymmdd")
+    startJob(s"btrip_company_$yyyymmdd")
   }
 }
